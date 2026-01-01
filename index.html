@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rework (.re) Language Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <h1>Rework</h1>
+            <span class="version">v1.0</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#introduction" class="active">Introduction</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#map-definition">Map Definition</a></li>
+            <li><a href="#anomalies">Anomalies</a></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#variables">Variables</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#control-flow">Control Flow</a></li>
+            <li><a href="#functions">Functions</a></li>
+            <li><a href="#effects">Effects</a></li>
+            <li><a href="#examples">Examples</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <section id="introduction">
+            <h1>Rework Language</h1>
+            <p class="tagline">A simple scripting language for Beyond Static event sheets</p>
+            
+            <div class="info-box">
+                <h3>What is Rework?</h3>
+                <p>Rework (.re) is a custom programming language designed specifically for the Beyond Static editor. It provides a text-based alternative to the visual graph editor, allowing you to write game logic in a clean, readable syntax.</p>
+            </div>
+
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Simple Syntax</h3>
+                    <p>Inspired by Python and GDScript for easy learning</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Bidirectional</h3>
+                    <p>Convert between Graph and Code views seamlessly</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Game-Focused</h3>
+                    <p>Built-in commands for anomalies, rooms, and effects</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast</h3>
+                    <p>Lightweight and efficient execution</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="getting-started">
+            <h1>Getting Started</h1>
+            
+            <h2>Your First .re File</h2>
+            <p>A basic Rework file contains a map definition and at least one event handler:</p>
+            
+            <pre><code class="language-re"><span class="comment"># My first Rework script</span>
+
+<span class="keyword">@map</span> <span class="string">"My First Scene"</span> {
+    <span class="property">night</span>: <span class="number">1</span>
+    <span class="property">time</span>: <span class="number">120.0</span>
+}
+
+<span class="keyword">on</span> <span class="event">begin_play</span> {
+    <span class="function">print</span>(<span class="string">"Hello, World!"</span>)
+}</code></pre>
+
+            <h2>File Extension</h2>
+            <p>Rework files use the <code>.re</code> extension. When you switch to Code view in the editor, your graph is automatically converted to this format.</p>
+        </section>
+
+        <section id="syntax">
+            <h1>Syntax Overview</h1>
+            
+            <h2>Comments</h2>
+            <p>Use <code>#</code> for single-line comments:</p>
+            <pre><code class="language-re"><span class="comment"># This is a comment</span>
+<span class="function">print</span>(<span class="string">"Hello"</span>)  <span class="comment"># Inline comment</span></code></pre>
+
+            <h2>Blocks</h2>
+            <p>Code blocks use curly braces <code>{ }</code>:</p>
+            <pre><code class="language-re"><span class="keyword">on</span> <span class="event">begin_play</span> {
+    <span class="comment"># Code here</span>
+}</code></pre>
+
+            <h2>Strings</h2>
+            <p>Strings are enclosed in double quotes:</p>
+            <pre><code class="language-re"><span class="string">"This is a string"</span></code></pre>
+
+            <h2>Numbers</h2>
+            <pre><code class="language-re"><span class="number">42</span>       <span class="comment"># Integer</span>
+<span class="number">3.14</span>     <span class="comment"># Float</span></code></pre>
+
+            <h2>Booleans</h2>
+            <pre><code class="language-re"><span class="keyword">true</span>
+<span class="keyword">false</span></code></pre>
+        </section>
+
+        <section id="map-definition">
+            <h1>Map Definition</h1>
+            <p>Every .re file should start with a map definition using <code>@map</code>:</p>
+            
+            <pre><code class="language-re"><span class="keyword">@map</span> <span class="string">"Scene Name"</span> {
+    <span class="property">night</span>: <span class="number">1</span>
+    <span class="property">time</span>: <span class="number">120.0</span>
+    <span class="property">thumbnail</span>: <span class="string">"files/thumbnail/cover.png"</span>
+}</code></pre>
+
+            <h2>Properties</h2>
+            <table class="props-table">
+                <thead>
+                    <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>night</code></td><td>int</td><td>Current night number (1-7)</td></tr>
+                    <tr><td><code>time</code></td><td>float</td><td>Game duration in seconds</td></tr>
+                    <tr><td><code>thumbnail</code></td><td>string</td><td>Path to thumbnail image</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="anomalies">
+            <h1>Anomalies</h1>
+            <p>Define available anomalies using <code>@anomalies</code>:</p>
+            
+            <pre><code class="language-re"><span class="keyword">@anomalies</span> {
+    <span class="string">"Glitch"</span>: <span class="keyword">true</span>      <span class="comment"># Enabled by default</span>
+    <span class="string">"Shadow"</span>: <span class="keyword">false</span>     <span class="comment"># Disabled by default</span>
+    <span class="string">"Distortion"</span>: <span class="keyword">true</span>
+}</code></pre>
+
+            <h2>Adding Anomalies at Runtime</h2>
+            <pre><code class="language-re"><span class="function">add_anomaly</span> <span class="string">"Glitch"</span> <span class="keyword">at</span> <span class="string">"cam1"</span>
+<span class="function">add_anomaly</span> <span class="string">"Shadow"</span> <span class="keyword">at</span> <span class="variable">random_room</span></code></pre>
+
+            <h2>Counting Anomalies</h2>
+            <pre><code class="language-re"><span class="keyword">if</span> <span class="function">anomaly_count</span>(<span class="string">"Glitch"</span>) > <span class="number">0</span> {
+    <span class="function">print</span>(<span class="string">"Glitch is active!"</span>)
+}</code></pre>
+        </section>
+
+        <section id="rooms">
+            <h1>Rooms</h1>
+            <p>Define camera rooms with <code>@rooms</code>:</p>
+            
+            <pre><code class="language-re"><span class="keyword">@rooms</span> [<span class="string">"cam1"</span>, <span class="string">"cam2"</span>, <span class="string">"cam3"</span>, <span class="string">"cam4"</span>] {
+    <span class="property">images</span>: [
+        <span class="string">"files/room1.png"</span>,
+        <span class="string">"files/room2.png"</span>,
+        <span class="string">"files/room3.png"</span>,
+        <span class="string">"files/room4.png"</span>
+    ]
+}</code></pre>
+
+            <h2>Special Values</h2>
+            <ul>
+                <li><code class="inline-code">random_room</code> - Returns a random room name</li>
+                <li><code class="inline-code">current_room</code> - Currently viewed room</li>
+            </ul>
+        </section>
+
+        <section id="variables">
+            <h1>Variables</h1>
+            <p>Declare variables with <code>var</code>:</p>
+            
+            <pre><code class="language-re"><span class="keyword">var</span> <span class="variable">counter</span>: <span class="type">int</span> = <span class="number">0</span>
+<span class="keyword">var</span> <span class="variable">player_name</span>: <span class="type">string</span> = <span class="string">"Observer"</span>
+<span class="keyword">var</span> <span class="variable">is_active</span>: <span class="type">bool</span> = <span class="keyword">true</span>
+<span class="keyword">var</span> <span class="variable">speed</span>: <span class="type">float</span> = <span class="number">1.5</span></code></pre>
+
+            <h2>Supported Types</h2>
+            <ul>
+                <li><code class="inline-code">int</code> - Integer numbers</li>
+                <li><code class="inline-code">float</code> - Decimal numbers</li>
+                <li><code class="inline-code">string</code> - Text</li>
+                <li><code class="inline-code">bool</code> - true/false</li>
+            </ul>
+
+            <h2>Setting Variables</h2>
+            <pre><code class="language-re"><span class="keyword">set</span> <span class="variable">counter</span> = <span class="variable">counter</span> + <span class="number">1</span>
+<span class="keyword">set</span> <span class="variable">player_name</span> = <span class="string">"New Name"</span></code></pre>
+        </section>
+
+        <section id="events">
+            <h1>Events</h1>
+            <p>Events are triggered automatically by the game engine:</p>
+
+            <h2>begin_play</h2>
+            <p>Fired once when the game starts:</p>
+            <pre><code class="language-re"><span class="keyword">on</span> <span class="event">begin_play</span> {
+    <span class="function">print</span>(<span class="string">"Game started!"</span>)
+}</code></pre>
+
+            <h2>tick</h2>
+            <p>Fired every frame:</p>
+            <pre><code class="language-re"><span class="keyword">on</span> <span class="event">tick</span> {
+    <span class="comment"># Called every frame</span>
+}</code></pre>
+
+            <h2>report</h2>
+            <p>Fired when player submits a report:</p>
+            <pre><code class="language-re"><span class="keyword">on</span> <span class="event">report</span> {
+    <span class="keyword">if</span> <span class="variable">report_correct</span> {
+        <span class="function">print</span>(<span class="string">"Correct!"</span>)
+    } <span class="keyword">else</span> {
+        <span class="function">print</span>(<span class="string">"Wrong!"</span>)
+    }
+}</code></pre>
+
+            <h2>hour N</h2>
+            <p>Fired at a specific in-game hour:</p>
+            <pre><code class="language-re"><span class="keyword">on</span> <span class="event">hour</span> <span class="number">3</span> {
+    <span class="function">add_anomaly</span> <span class="string">"Shadow"</span> <span class="keyword">at</span> <span class="variable">random_room</span>
+}
+
+<span class="keyword">on</span> <span class="event">hour</span> <span class="number">6</span> {
+    <span class="function">print</span>(<span class="string">"Almost done!"</span>)
+}</code></pre>
+        </section>
+
+        <section id="control-flow">
+            <h1>Control Flow</h1>
+
+            <h2>If / Else</h2>
+            <pre><code class="language-re"><span class="keyword">if</span> <span class="variable">counter</span> > <span class="number">5</span> {
+    <span class="function">print</span>(<span class="string">"Counter is high"</span>)
+} <span class="keyword">else</span> {
+    <span class="function">print</span>(<span class="string">"Counter is low"</span>)
+}</code></pre>
+
+            <h2>Comparison Operators</h2>
+            <table class="props-table">
+                <thead>
+                    <tr><th>Operator</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>==</code></td><td>Equal to</td></tr>
+                    <tr><td><code>!=</code></td><td>Not equal to</td></tr>
+                    <tr><td><code>&gt;</code></td><td>Greater than</td></tr>
+                    <tr><td><code>&lt;</code></td><td>Less than</td></tr>
+                    <tr><td><code>&gt;=</code></td><td>Greater or equal</td></tr>
+                    <tr><td><code>&lt;=</code></td><td>Less or equal</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Delay</h2>
+            <p>Pause execution for a duration:</p>
+            <pre><code class="language-re"><span class="function">delay</span> <span class="number">2.5</span>  <span class="comment"># Wait 2.5 seconds</span></code></pre>
+
+            <h2>Random</h2>
+            <pre><code class="language-re"><span class="keyword">var</span> <span class="variable">chance</span>: <span class="type">int</span> = <span class="function">random</span>(<span class="number">0</span>, <span class="number">100</span>)
+
+<span class="keyword">if</span> <span class="variable">chance</span> > <span class="number">80</span> {
+    <span class="function">print</span>(<span class="string">"Lucky!"</span>)
+}</code></pre>
+
+            <h2>Once</h2>
+            <p>Execute code only once:</p>
+            <pre><code class="language-re"><span class="keyword">once</span> {
+    <span class="function">print</span>(<span class="string">"This runs only once"</span>)
+}</code></pre>
+        </section>
+
+        <section id="functions">
+            <h1>Functions</h1>
+            <p>Define reusable functions with <code>func</code>:</p>
+            
+            <pre><code class="language-re"><span class="keyword">func</span> <span class="function-name">greet</span>(<span class="variable">name</span>: <span class="type">string</span>) {
+    <span class="function">print</span>(<span class="string">"Hello, "</span> + <span class="variable">name</span> + <span class="string">"!"</span>)
+}
+
+<span class="keyword">func</span> <span class="function-name">add</span>(<span class="variable">a</span>: <span class="type">int</span>, <span class="variable">b</span>: <span class="type">int</span>) {
+    <span class="keyword">return</span> <span class="variable">a</span> + <span class="variable">b</span>
+}</code></pre>
+
+            <h2>Calling Functions</h2>
+            <pre><code class="language-re"><span class="function">call</span> <span class="function-name">greet</span>(<span class="string">"Player"</span>)
+
+<span class="keyword">var</span> <span class="variable">result</span>: <span class="type">int</span> = <span class="function">call</span> <span class="function-name">add</span>(<span class="number">5</span>, <span class="number">3</span>)</code></pre>
+        </section>
+
+        <section id="effects">
+            <h1>Effects</h1>
+            <p>Trigger visual and audio effects:</p>
+            
+            <pre><code class="language-re"><span class="function">effect</span> <span class="string">"screen_glitch"</span> <span class="keyword">duration</span> <span class="number">2.0</span>
+<span class="function">effect</span> <span class="string">"static_noise"</span> <span class="keyword">duration</span> <span class="number">1.5</span>
+<span class="function">effect</span> <span class="string">"blackout"</span> <span class="keyword">duration</span> <span class="number">0.5</span></code></pre>
+
+            <h2>Built-in Effects</h2>
+            <table class="props-table">
+                <thead>
+                    <tr><th>Effect Name</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>screen_glitch</code></td><td>Digital glitch effect</td></tr>
+                    <tr><td><code>static_noise</code></td><td>TV static overlay</td></tr>
+                    <tr><td><code>blackout</code></td><td>Screen fades to black</td></tr>
+                    <tr><td><code>flash</code></td><td>Bright white flash</td></tr>
+                    <tr><td><code>shake</code></td><td>Screen shake</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="examples">
+            <h1>Complete Examples</h1>
+
+            <h2>Basic Horror Scene</h2>
+            <pre><code class="language-re"><span class="comment"># Basic Horror Scene</span>
+<span class="comment"># A simple example showing core features</span>
+
+<span class="keyword">@map</span> <span class="string">"Night Shift"</span> {
+    <span class="property">night</span>: <span class="number">1</span>
+    <span class="property">time</span>: <span class="number">180.0</span>
+}
+
+<span class="keyword">@anomalies</span> {
+    <span class="string">"Glitch"</span>: <span class="keyword">true</span>
+    <span class="string">"Shadow"</span>: <span class="keyword">true</span>
+}
+
+<span class="keyword">@rooms</span> [<span class="string">"lobby"</span>, <span class="string">"office"</span>, <span class="string">"storage"</span>] {
+    <span class="property">images</span>: [
+        <span class="string">"files/lobby.png"</span>,
+        <span class="string">"files/office.png"</span>,
+        <span class="string">"files/storage.png"</span>
+    ]
+}
+
+<span class="keyword">var</span> <span class="variable">anomaly_count</span>: <span class="type">int</span> = <span class="number">0</span>
+
+<span class="keyword">on</span> <span class="event">begin_play</span> {
+    <span class="function">print</span>(<span class="string">"Night "</span> + <span class="variable">night</span> + <span class="string">" begins..."</span>)
+}
+
+<span class="keyword">on</span> <span class="event">tick</span> {
+    <span class="keyword">if</span> <span class="function">random</span>(<span class="number">0</span>, <span class="number">1000</span>) > <span class="number">990</span> {
+        <span class="function">add_anomaly</span> <span class="string">"Glitch"</span> <span class="keyword">at</span> <span class="variable">random_room</span>
+        <span class="keyword">set</span> <span class="variable">anomaly_count</span> = <span class="variable">anomaly_count</span> + <span class="number">1</span>
+        <span class="function">effect</span> <span class="string">"static_noise"</span> <span class="keyword">duration</span> <span class="number">0.3</span>
+    }
+}
+
+<span class="keyword">on</span> <span class="event">hour</span> <span class="number">3</span> {
+    <span class="function">add_anomaly</span> <span class="string">"Shadow"</span> <span class="keyword">at</span> <span class="string">"storage"</span>
+    <span class="function">effect</span> <span class="string">"blackout"</span> <span class="keyword">duration</span> <span class="number">1.0</span>
+}
+
+<span class="keyword">on</span> <span class="event">report</span> {
+    <span class="keyword">if</span> <span class="variable">report_correct</span> {
+        <span class="function">print</span>(<span class="string">"Good catch!"</span>)
+    }
+}</code></pre>
+
+            <div class="try-it">
+                <h3>Try It Yourself!</h3>
+                <p>Copy this code to the Code view in the Beyond Static editor to see it in action.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
